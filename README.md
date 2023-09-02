@@ -8,8 +8,8 @@ Easily transfer files on private network
 > apache or nginx (virtual host) for best performance
 
 # configurations
-> base-dir: complete path to quic_share
-> php-dir: php path (optional if php path already available in system environment variable)
-> host: the host to bind the app service (optional)
-> port: the port to bind the app service (default: 45678)
+<li> base-dir: complete path to quic_share </li>
+<li> php-dir: php path (optional if php path already available in system environment variable) </li>
+<li> host: the host to bind the app service (optional) </li>
+<li> port: the port to bind the app service (default: 45678) </li>
 
