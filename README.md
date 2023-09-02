@@ -1,2 +1,4 @@
 # quic-share
-Easily transfer files between private network
+Easily transfer files on private network
+
+
