@@ -1,5 +1,8 @@
 <?php
 ### PHP INI Configs ###
+putenv('TMP=' . __DIR__ . '/tmp');
+putenv('TMPDIR=' . __DIR__ . '/tmp');
+putenv('TEMP=' . __DIR__ . '/tmp');
 date_default_timezone_set('Asia/Dhaka');
 set_time_limit(0);
 ini_set('display_errors', 1);
@@ -10,14 +13,14 @@ define('_FILE_DIR_', __DIR__ . FILE_DIR);
 
 function format_bytes(int $size){
     $base = log($size, 1024);
-    $suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
+    $suffixes = array('', 'KB', 'MB', 'GB', 'TB');
     return round(pow(1024, $base-floor($base)), 2).''.$suffixes[floor($base)];
 }
 
 function scan_dir(string $dir, int $sort = 0) {
     $ignored = array('.', '..', '.svn', '.htaccess');
 
-    $files = array();    
+    $files = array();
     foreach (scandir($dir) as $file) {
         if (in_array($file, $ignored)) continue;
         $files[$file] = filemtime($dir . '/' . $file);
@@ -38,11 +41,11 @@ function getDownloadUrl(string $file) {
 }
 
 function getRenameUrl() {
-    return 'http://' . $_SERVER['HTTP_HOST'] . '/?rename='; 
+    return 'http://' . $_SERVER['HTTP_HOST'] . '/?rename=';
 }
 
 function getDeleteUrl(string $file) {
-    return 'http://' . $_SERVER['HTTP_HOST'] . '/?delete=' . $file; 
+    return 'http://' . $_SERVER['HTTP_HOST'] . '/?delete=' . $file;
 }
 
 function fallBackToRoot() {
@@ -54,12 +57,12 @@ if (isset($_GET['download'])) {
     if (file_exists($downloadFile = _FILE_DIR_ . '/' . $_GET['download'])) {
         header('Content-Type: application/octet-stream');
         header('Content-Length: ' . filesize($downloadFile));
-        header("Content-Transfer-Encoding: Binary"); 
-        header("Content-disposition: attachment; filename=\"" . $_GET['download'] . "\""); 
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . $_GET['download'] . "\"");
         if (filesize($downloadFile) > 20 * 1024 * 1024) {
             header('Location: http://'. $_SERVER['HTTP_HOST'] . FILE_DIR . '/' . $_GET['download']);
         } else {
-            readfile($downloadFile); 
+            readfile($downloadFile);
         }
         exit;
     }
@@ -92,7 +95,7 @@ if (isset($_GET['delete'])) {
 }
 
 if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
-    if (@count($_FILES['files']) > 0) {
+    if (!empty($_FILES['files'])) {
 
         $fileIndex = 0;
         $files = $_FILES['files'];
@@ -123,7 +126,7 @@ if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
     }
 }
 ?>
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quic Share</title><style>* {font-family: Arial, Helvetica, sans-serif;}.copyright {position: fixed; padding-top:5px; background-color: #efefef; bottom: 0; left: 0; right: 0; height: 28px; text-align: center;}</style></head><body>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quic Share</title><style>* {font-family: Arial, Helvetica, sans-serif;}.copyright {position: fixed; padding-top:5px;background:#eef; bottom: 0; left: 0; right: 0; height: 28px; text-align: center;} @media (prefers-color-scheme: dark) { html {color: #FFFFFF; border-color: #eef; background-color: #000000} .copyright {background: #444;}}</style></head><body>
 <?php
 if (isset($_GET['qrcode'])) {
 ?>
