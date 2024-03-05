@@ -1,8 +1,8 @@
 <?php
 ### PHP INI Configs ###
-putenv('TMP=' . __DIR__ . '/tmp');
-putenv('TMPDIR=' . __DIR__ . '/tmp');
-putenv('TEMP=' . __DIR__ . '/tmp');
+//putenv('TMP=' . __DIR__ . '/tmp');
+//putenv('TMPDIR=' . __DIR__ . '/tmp');
+//putenv('TEMP=' . __DIR__ . '/tmp');
 date_default_timezone_set('Asia/Dhaka');
 set_time_limit(0);
 ini_set('display_errors', 1);
@@ -55,13 +55,13 @@ function fallBackToRoot() {
 
 if (isset($_GET['download'])) {
     if (file_exists($downloadFile = _FILE_DIR_ . '/' . $_GET['download'])) {
-        header('Content-Type: application/octet-stream');
-        header('Content-Length: ' . filesize($downloadFile));
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=\"" . $_GET['download'] . "\"");
         if (filesize($downloadFile) > 20 * 1024 * 1024) {
             header('Location: http://'. $_SERVER['HTTP_HOST'] . FILE_DIR . '/' . $_GET['download']);
         } else {
+            header('Content-Type: application/octet-stream');
+            header('Content-Length: ' . filesize($downloadFile));
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=\"" . $_GET['download'] . "\"");
             readfile($downloadFile);
         }
         exit;
